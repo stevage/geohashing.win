@@ -10,7 +10,7 @@ import { getGraticuleNames } from './graticules/graticuleNames'
 import { getClassAreasByVectorLayer } from './graticules/graticuleLandClasses'
 import { addGraticuleLayers, updateGraticuleStyle } from './graticules/graticuleStyle'
 import { report } from '@/util'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 import type { UtilsMap } from 'map-gl-utils/dist/types'
 import type { MapMouseEvent } from 'mapbox-gl'
 
@@ -66,7 +66,7 @@ EventBus.$on('select-graticule-by-id', (id) => {
   selectGraticuleByXY(window.map, x, y)
 })
 
-export function initGraticuleLayers({ map, filters }: { map: UtilsMap; filters: Filters }) {
+export function initGraticuleLayers({ map, filters }: { map: UtilsMap; filters: FiltersOptions }) {
   const first = !map.getSource('graticules')
   if (first) {
     addGraticuleLayers(map)

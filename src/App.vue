@@ -4,7 +4,7 @@
         #middle.flex.flex-auto
             #sidebar.br.b--dark-gray.overflow-auto.pv2-ns(:class="{ collapsed: !sidebarOpen}")
                 .container.overflow-auto.pa2.bw2
-                    .credits By <a href="https://hire.stevebennett.me">Steve Bennett</a>. Data by <a href="https://fippe.de/all">Fippe</a>.
+                    .credits <a href="https://github.com/stevage/geohashing.win" target="_blank">Code</a> by <a href="https://hire.stevebennett.me" target="_blank">Steve Bennett</a>. Data by <a href="https://fippe.de/all" target="_blank">Fippe</a>.
 
                     label
                       //- span.pa2 Explore

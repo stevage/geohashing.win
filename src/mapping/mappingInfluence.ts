@@ -1,7 +1,7 @@
 import { getDB } from './expeditions/expeditionIndex'
 import type { mapU } from '@/util'
 import type { UtilsMap } from 'map-gl-utils'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global.d.ts'
 
 // import InfluenceWorker from './worker/influenceWorker.js?worker';
 
@@ -17,7 +17,7 @@ async function computeInfluence({
   ...options
 }: {
   map: UtilsMap
-  filters: Filters
+  filters: FiltersOptions
   [key: string]: any
 }) {
   startTime = performance.now()
@@ -136,7 +136,7 @@ export function updateInfluenceStyle({
   ...options
 }: {
   map: mapU
-  filters: Filters
+  filters: FiltersOptions
   show: boolean
   [key: string]: any
 }) {

@@ -11,7 +11,7 @@ declare module 'vue' {
   export { configureCompat }
 }
 
-export type Filters = {
+export type FiltersOptions = {
   participants: string
   minParticipants: number
   maxParticipants: number

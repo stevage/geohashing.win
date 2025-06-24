@@ -5,7 +5,7 @@ import type { Expedition } from '@/mapping/expeditions/expeditionsData'
 import type { GraticuleStat, GraticuleStats } from './mapping/graticules/graticuleStats'
 import type { FeatureCollection } from 'geojson'
 import Vue from 'vue'
-import Filters from '@/components/Filters.vue'
+import type Filters from '@/components/Filters.vue'
 
 declare global {
   interface Window {

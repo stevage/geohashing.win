@@ -1,6 +1,5 @@
 <template lang="pug">
 #Filters.mt4(:class="{ disabled: !enabled }")
-  //- h3.mb2 Expeditions filter
   label.pointer.mb2.db(for="showfilters")
       input.mr2#showfilters(type="checkbox" v-model="showFilters" :disabled="!enabled")
       span Apply filter...
@@ -50,8 +49,8 @@
         option(value="year") Year
         option(value="month") Month
         option(value="weekday") Day of the week
-        option(value="experienceMax") Hasher's previous expeditions
-        option(value="experienceDaysMax") Hasher's years of experience
+        option(value="experienceMax") Hasher&apos;s previous expeditions
+        option(value="experienceDaysMax") Hasher&apos;s years of experience
         option(value="participants") Participant
         option(value="participantsFixed") Participant (fixed palette)
         option(value="transportMode") Transport mode
@@ -76,12 +75,6 @@
         option(value="lambertConformalConic") Lambert Conformal Conic
         option(value="winkelTripel") Winkel Tripel azimuthal
 
-      //- input.mr1(type="checkbox" v-model="filters.scaleExpedition" :disabled="!enabled")
-      //- span Scale by expedition size
-
-    //- label.db
-    //-   input.mr1(type="checkbox" v-model="filters.showStreaks" :disabled="!enabled")
-    //-   span Show streaks
 
     label.db.ml3(v-if="filters.showStreaks")
       span Minimum streak length
@@ -90,7 +83,19 @@
       input.mr1(type="checkbox" v-model.number="filters.onlySuccessStreaks" :disabled="!enabled")
       span Only show 100% success treaks
       div(style="color: #888; font-size: 0.8em") Excludes success-streaks that have a fail before or after
-  //- h3.mb1 Graticules
+</template>
+
+<script lang="ts">
+/*
+      //- input.mr1(type="checkbox" v-model="filters.scaleExpedition" :disabled="!enabled")
+      //- span Scale by expedition size
+
+    //- label.db
+    //-   input.mr1(type="checkbox" v-model="filters.showStreaks" :disabled="!enabled")
+    //-   span Show streaks
+
+
+//- h3.mb1 Graticules
   //- .group
   //-   label.db
   //-     input.mr1(type="checkbox" v-model="graticules.showGraticules" :disabled="!enabled")
@@ -98,16 +103,15 @@
   //-   label.db(v-show="graticules.showGraticules")
   //-     input.mr1( type="checkbox" v-model="graticules.showGraticuleLabels" :disabled="!enabled")
   //-     span Show graticule labels
-</template>
 
-<script lang="ts">
+*/
 import { EventBus } from '@/EventBus'
 import { getUrlParam, setUrlParam } from '@/util'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 export default {
   name: 'Filters',
   data: () => {
-    const filters: Filters = {
+    const filters: FiltersOptions = {
       minParticipants: 0,
       maxParticipants: 100,
       scaleExpeditionsBy: 'none',

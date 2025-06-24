@@ -5,7 +5,7 @@ import kdbush from 'kdbush'
 import * as turf from '@turf/turf'
 import type { Feature, Point } from 'geojson'
 import type mapboxgl from 'mapbox-gl'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 
 let resolveLoad: () => void
 const indexLoaded = new Promise((resolve): void => {
@@ -145,7 +145,7 @@ export class ExpeditionIndex {
   }
 }
 
-function expeditionFilterFunc(filters: Filters) {
+function expeditionFilterFunc(filters: FiltersOptions) {
   if (!filters) {
     return () => true
   }

@@ -28,7 +28,7 @@
 // future idea: if number cutoff is 1, you essentially get Voronoi polygons. but only works if we're using the method
 // of computing points in decreasing distance order, which is quite slow
 import { EventBus } from '@/EventBus'
-import { updateInfluenceStyle } from '@/mapping/mappingInfluence'
+import { updateInfluenceStyle } from '@/mapping/mappingInfluence.ts'
 export default {
   data: () => ({
     showInfluence: false, // window.location.hostname === 'localhost',

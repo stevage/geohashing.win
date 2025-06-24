@@ -11,14 +11,14 @@ import type { mapU } from '@/util'
 import debounce from 'debounce'
 import type { FeatureCollection, Point } from 'geojson'
 import { initIndex, type Expedition } from './expeditions/expeditionIndex'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 import {
   getStoredExpeditions,
   saveExpeditions,
   secondsSinceExpeditionsUpdated,
 } from './expeditions/expeditionStore'
 
-function updateFilters({ map, filters }: { map: mapU; filters: Filters }) {
+function updateFilters({ map, filters }: { map: mapU; filters: FiltersOptions }) {
   const successFilter =
     filters.outcome === 'all' ? true : ['==', ['get', 'success'], filters.outcome === 'success']
   let participantsFilter: Expression | boolean = true

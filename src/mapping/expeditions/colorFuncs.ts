@@ -7,7 +7,7 @@ import type mapboxgl from 'mapbox-gl'
 // @ts-ignore
 
 import md5 from '@/md5'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 
 import type { Expedition, Expeditions } from '@/mapping/expeditions/expeditionIndex'
 import { getDB } from '@/mapping/expeditions/expeditionIndex'
@@ -301,10 +301,15 @@ colorFuncs.hardship = () => {
 
 export async function colorFunc({ colorVis, ...rest }: { colorVis: colorFuncTypes }) {
   // console.log('colorVis', colorVis, colorFuncs[colorVis]);
-  return await colorFuncs[colorVis](rest)
+  const func = colorFuncs[colorVis]
+  if (!func) {
+    console.error(`Unknown colorVis: ${colorVis}`)
+    return await colorFuncs.year(rest)
+  }
+  return await func(rest)
 }
 
-export function legendColors(filters: Filters, activeColorFunc: mapboxgl.Expression) {
+export function legendColors(filters: FiltersOptions, activeColorFunc: mapboxgl.Expression) {
   const vals = []
   // const makeFeature = (properties: { [key in colorFuncTypes]?: number }) => ({
   const makeFeature = (properties: Record<string, number | string>) => ({
@@ -403,7 +408,7 @@ export function legendColors(filters: Filters, activeColorFunc: mapboxgl.Express
 
     vals.reverse()
   } else {
-    throw 'unknown colorVis' + filters.colorVis
+    throw 'unknown colorVis ' + filters.colorVis
   }
   return vals
 }

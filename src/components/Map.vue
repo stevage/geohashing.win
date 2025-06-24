@@ -25,11 +25,11 @@ import { initGraticuleLayers } from '@/mapping/mappingGraticules'
 
 import { dateToDays, getGraticuleBounds, report } from '@//util'
 // import { updateStreakStyle } from '@/mapping/mappingStreaks'
-import { updateInfluenceStyle } from '@/mapping/mappingInfluence'
+import { updateInfluenceStyle } from '@/mapping/mappingInfluence.ts'
 import { updateParticipants } from '@/mapping/mappingParticipants'
 // import { initGTG } from '@/mapping/gtg';
 import debounce from 'debounce'
-import type { Filters } from '@/global'
+import type { FiltersOptions } from '@/global'
 export default {
   data: () => ({
     filters: {
@@ -39,7 +39,7 @@ export default {
       participants: '',
       outcome: 'all',
       animating: false,
-    } as Filters,
+    } as FiltersOptions,
     frameNo: 0,
     animationDay: 0,
     globe: window.location.hash.match(/globe/),
@@ -118,9 +118,9 @@ export default {
     }
 
     EventBus.$emit('map-loaded', map)
-    this.filters = window.Filters?.filters ?? true
+    this.filters = window.app.Filters?.filters ?? true
     this.initMapContent()
-    EventBus.$on('filters-change', (filters: Filters) => {
+    EventBus.$on('filters-change', (filters: FiltersOptions) => {
       console.log('filters-change')
       this.filters = filters
       this.updateMapStyleDebounced()
