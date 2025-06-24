@@ -40,6 +40,7 @@ export default {
   }),
   created() {
     window.GraticuleOptions = this
+    window.app.GraticuleOptions = this
   },
   computed: {
     graticuleFillStyle() {

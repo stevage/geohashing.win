@@ -66,12 +66,25 @@ EventBus.$on('select-graticule-by-id', (id) => {
   selectGraticuleByXY(window.map, x, y)
 })
 
-export function setGraticuleStyle({ map, filters }: { map: UtilsMap; filters: Filters }) {
+export function initGraticuleLayers({ map, filters }: { map: UtilsMap; filters: Filters }) {
   const first = !map.getSource('graticules')
   if (first) {
     addGraticuleLayers(map)
     window.graticuleNamesP = getGraticuleNames() // a promise
-
+    EventBus.$on('filters-change', (newFilters) => {
+      if (newFilters.participants) {
+        updateGraticuleStyle(map, {
+          fillStyle: 'selectedParticipants',
+          showGraticules: true,
+          showGraticuleLabels: true,
+          infoLabel: 'none',
+        })
+      } else {
+        // eww, we sort of need to do this because the user may have just cleared the participants filter
+        updateGraticuleStyle(map, window.app.GraticuleOptions.graticules)
+      }
+      console.log('filters-change', newFilters)
+    })
     EventBus.$on('graticule-options-change', (options) => updateGraticuleStyle(map, options))
     map.on('click', 'graticules-label', (e) => clickGraticuleLabel(map, e))
     map.on('click', 'graticules-fill', (e) => {

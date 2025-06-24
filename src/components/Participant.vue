@@ -26,8 +26,8 @@ import HashStats from '@/components/HashStats.vue'
             //- td {{ expedition.date }}
             td.pr4 {{ expedition.properties.id.slice(0, 10) }}
             td {{ expedition.properties.graticule }}
-            td.green {{ expedition.properties.success ? /* green check mark */ '✓' : /* red cross mark */ '' }}
-            td {{ expedition.properties.participantsCount > 1 ? `+${expedition.properties.participantsCount} others` : '' }}
+            td.green {{ expedition.properties.success ? '✓' :  '' }}
+            td {{ expedition.properties.participantsCount > 1 ? `+${+expedition.properties.participantsCount - 1} other${expedition.properties.participantsCount > 2 ? 's' :''}` : '' }}
     WikiPage.mt3(v-if="!multipleParticipants" :pageId="`user:${participant}`")
 
 </template>
@@ -37,6 +37,8 @@ import { setSelectedParticipant } from '@/mapping/mappingParticipants'
 import { getExpeditionsByParticipant } from '@/mapping/mappingParticipants'
 import { EventBus } from '@/EventBus'
 import { getUrlParam } from '@/util'
+import type { ExpeditionProps } from '@/mapping/expeditions/expeditionsData'
+import type { Feature, Point } from 'geojson'
 export default {
   data: () => ({ participant: getUrlParam('participants'), expeditions: [], showList: true }),
   props: ['active'],
@@ -48,9 +50,9 @@ export default {
     })
   },
   methods: {
-    clickExpedition(expedition) {
+    clickExpedition(expedition: Feature<Point, ExpeditionProps>) {
       EventBus.$emit('select-feature', expedition)
-      window.map.flyTo({ center: expedition.geometry.coordinates, zoom: 8 })
+      window.map.flyTo({ center: expedition.geometry.coordinates as [number, number], zoom: 8 })
     },
     async updateParticipant() {
       setSelectedParticipant(this.participant || '')

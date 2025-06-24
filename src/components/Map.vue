@@ -21,7 +21,7 @@ import {
 import { updateMeridians } from '@/mapping/mappingMeridians'
 import { updateGeohashes } from '@/mapping/mappingGeohashes'
 
-import { setGraticuleStyle } from '@/mapping/mappingGraticules'
+import { initGraticuleLayers } from '@/mapping/mappingGraticules'
 
 import { dateToDays, getGraticuleBounds, report } from '@//util'
 // import { updateStreakStyle } from '@/mapping/mappingStreaks'
@@ -251,7 +251,7 @@ export default {
         }),
       )
       report('Update graticules', () =>
-        setGraticuleStyle({ map: window.map, filters: this.filters }),
+        initGraticuleLayers({ map: window.map, filters: this.filters }),
       )
       // report('Update streaks', () =>
       //     updateStreakStyle({ map, filters: this.filters })

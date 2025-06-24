@@ -20,7 +20,7 @@ interface GraticuleStats {
 export function makeGraticuleFeature(
   xstr: string,
   ystr: string,
-  props: Properties,
+  props?: Properties,
 ): Feature<Polygon, { [name: string]: any }> {
   const x = +xstr
   const y = +ystr

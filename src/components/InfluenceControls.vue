@@ -27,67 +27,66 @@
 <script lang="ts">
 // future idea: if number cutoff is 1, you essentially get Voronoi polygons. but only works if we're using the method
 // of computing points in decreasing distance order, which is quite slow
-import { EventBus } from '@/EventBus';
-import { updateInfluenceStyle } from '@/mapping/mappingInfluence';
+import { EventBus } from '@/EventBus'
+import { updateInfluenceStyle } from '@/mapping/mappingInfluence'
 export default {
-    data: () => ({
-        showInfluence: false, // window.location.hostname === 'localhost',
-        showFade: true,
-        rangeCutoff: 1,
-        fadeStrength: 4,
-        numberCutoff: 10,
-        // rangeCutoff: 5,
-        // fadeStrength: 12,
-        // numberCutoff: 250,
-    }),
-    created() {
-        window.InfluenceControls = this;
-        // another great idea that didn't work...
-        // EventBus.$on('move', () => {
-        //     this.showInfluence && this.update();
-        // });
-        EventBus.$on('moveend', () => {
-            window.setTimeout(() => {
-                this.showInfluence && this.update(true);
-            }, 100);
-        });
-        EventBus.$on('filters-change', () => this.update());
+  data: () => ({
+    showInfluence: false, // window.location.hostname === 'localhost',
+    showFade: true,
+    rangeCutoff: 1,
+    fadeStrength: 4,
+    numberCutoff: 10,
+    // rangeCutoff: 5,
+    // fadeStrength: 12,
+    // numberCutoff: 250,
+  }),
+  created() {
+    window.InfluenceControls = this
+    // another great idea that didn't work...
+    // EventBus.$on('move', () => {
+    //     this.showInfluence && this.update();
+    // });
+    EventBus.$on('moveend', () => {
+      window.setTimeout(() => {
+        this.showInfluence && this.update(true)
+      }, 100)
+    })
+    EventBus.$on('filters-change', () => this.update())
+  },
+  computed: {
+    params() {
+      return `${this.showInfluence} ${this.showFade} ${this.rangeCutoff} ${this.fadeStrength} ${this.numberCutoff}`
     },
-    computed: {
-        params() {
-            return `${this.showInfluence} ${this.showFade} ${this.rangeCutoff} ${this.fadeStrength} ${this.numberCutoff}`;
-        },
-        usedFadeStrength() {
-            // 12 maximum, 0 minimum
-            return Math.exp(12 - this.fadeStrength) - 1;
-        },
+    usedFadeStrength() {
+      // 12 maximum, 0 minimum
+      return Math.exp(12 - this.fadeStrength) - 1
     },
-    watch: {
-        params() {
-            this.update(window.map);
-            if (this.showInfluence) {
-                window.Filters.filters.colorVis = 'participantsFixed';
-            }
-            window.map.U.toggle(/influence-/, this.showInfluence);
-        },
+  },
+  watch: {
+    params() {
+      this.update(window.map)
+      if (this.showInfluence) {
+        window.app.Filters.filters.colorVis = 'participantsFixed'
+      }
+      window.map.U.toggle(/influence-/, this.showInfluence)
     },
+  },
 
-    methods: {
-        update(finished = false) {
-            updateInfluenceStyle({
-                map: window.map,
-                filters: window.Filters.filters,
-                finished: !!finished,
-                show: this.showInfluence,
-                showFade: this.showFade,
-                rangeCutoff: !finished ? 0.1 : this.rangeCutoff,
-                fadeStrength: this.usedFadeStrength, //* this.fadeStrength,
-                numberCutoff:
-                    this.numberCutoff === 250 ? Infinity : this.numberCutoff,
-            });
-        },
+  methods: {
+    update(finished = false) {
+      updateInfluenceStyle({
+        map: window.map,
+        filters: window.app.Filters.filters,
+        finished: !!finished,
+        show: this.showInfluence,
+        showFade: this.showFade,
+        rangeCutoff: !finished ? 0.1 : this.rangeCutoff,
+        fadeStrength: this.usedFadeStrength, //* this.fadeStrength,
+        numberCutoff: this.numberCutoff === 250 ? Infinity : this.numberCutoff,
+      })
     },
-};
+  },
+}
 </script>
 
 <style scoped></style>

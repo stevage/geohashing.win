@@ -318,7 +318,7 @@ export async function updateExpeditionsStyle({
     )
 
     map.on('moveend', async () => {
-      const filters = window.Filters.filters
+      const filters = window.app.Filters.filters
       if (filters.colorVis === 'participants' || filters.colorVis === 'participantsFixed') {
         // updateHashStyle({ map, filters, quickUpdate: true });
         const acf = await colorFunc(filters)

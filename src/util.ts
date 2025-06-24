@@ -5,6 +5,7 @@ import type { Expedition } from '@/mapping/expeditions/expeditionsData'
 import type { GraticuleStat, GraticuleStats } from './mapping/graticules/graticuleStats'
 import type { FeatureCollection } from 'geojson'
 import Vue from 'vue'
+import Filters from '@/components/Filters.vue'
 
 declare global {
   interface Window {
@@ -16,8 +17,8 @@ declare global {
       graticules?: FeatureCollection
       overrideTime?: string
       overrideTimezone?: string
+      Filters: typeof Filters
     }
-    Filters: typeof Vue
     InfluenceControls: typeof Vue
     HashInfo: typeof Vue
     AnimationControls: typeof Vue

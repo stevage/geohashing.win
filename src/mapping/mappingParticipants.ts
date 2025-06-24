@@ -1,7 +1,7 @@
 import type { mapU } from '@/util'
-import type { Feature, Point, Position } from 'geojson'
+import type { Feature, GeoJsonProperties, Point, Position } from 'geojson'
 import { featureCollection, point, centerOfMass, centroid, clustersDbscan } from '@turf/turf'
-import { getExpeditions } from '@/mapping/expeditions/expeditionsData'
+import { getExpeditions, type ExpeditionProps } from '@/mapping/expeditions/expeditionsData'
 import { colorFunc } from './expeditions/colorFuncs'
 import { getUrlParam } from '@/util'
 import U from 'map-gl-utils/dist/index.esm.js'
@@ -96,7 +96,13 @@ let expeditionsByParticipant:
 
 // export async function getExpeditionsByParticipant(participant: string) {}
 
-export async function getExpeditionsByParticipant() {
+export async function getExpeditionsByParticipant(): Promise<{
+  [participant: string]: {
+    points: Position[]
+    dates: Date[]
+    expeditions: Feature<Point, ExpeditionProps>[]
+  }
+}> {
   if (expeditionsByParticipant) return expeditionsByParticipant
   const expeditions = await getExpeditions(false)
   expeditionsByParticipant = {}
@@ -144,8 +150,7 @@ export async function getParticipantsData() {
 let selectedParticipant = getUrlParam('participants')
 export function setSelectedParticipant(p: string) {
   selectedParticipant = p
-  window.Filters.filters.participants = p
-  updateParticipants(window.map)
+  window.app.Filters.filters.participants = p
 }
 
 async function clickLabel(e: MapMouseEvent) {
@@ -163,13 +168,7 @@ async function clickLabel(e: MapMouseEvent) {
   }
 
   window.app.Participant.participant = participant
-  // await $nextTick()
-  window.setTimeout(() => {
-    setSelectedParticipant(participant)
-  }, 10)
-  if (participant) {
-    // window.setTimeout(() => window.map.U.show(/expeditions/), 300)
-  }
+  window.setTimeout(() => setSelectedParticipant(participant), 10)
 }
 
 export async function updateParticipants(map: mapU) {

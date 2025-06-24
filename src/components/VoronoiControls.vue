@@ -16,52 +16,47 @@
 </template>
 
 <script>
-import { EventBus } from '@/EventBus';
-import { getExpeditionsNearViewport } from '@/mapping/expeditions/expeditionIndex';
-import { voronoi, featureCollection } from '@turf/turf';
-import { colorFunc } from '@/mapping/expeditions/colorFuncs';
+import { EventBus } from '@/EventBus'
+import { getExpeditionsNearViewport } from '@/mapping/expeditions/expeditionIndex'
+import { voronoi, featureCollection } from '@turf/turf'
+import { colorFunc } from '@/mapping/expeditions/colorFuncs'
 export default {
-    data: () => ({ showVoronoi: false, onlySolo: true }),
-    created() {
-        window.VoronoiControls = this;
-        EventBus.$on('map-loaded', (map) =>
-            map.on('moveend', () => this.showVoronoi && this.update(map))
-        );
+  data: () => ({ showVoronoi: false, onlySolo: true }),
+  created() {
+    window.VoronoiControls = this
+    EventBus.$on('map-loaded', (map) =>
+      map.on('moveend', () => this.showVoronoi && this.update(map)),
+    )
+  },
+  watch: {
+    showVoronoi() {
+      if (this.showVoronoi) {
+        this.update(window.map)
+        window.app.Filters.filters.colorVis = 'participants'
+      }
+      window.map.U.toggle('voronoi-fill', this.showVoronoi)
     },
-    watch: {
-        showVoronoi() {
-            if (this.showVoronoi) {
-                this.update(window.map);
-                window.Filters.filters.colorVis = 'participants';
-            }
-            window.map.U.toggle('voronoi-fill', this.showVoronoi);
-        },
-        onlySolo() {
-            this.update();
-        },
+    onlySolo() {
+      this.update()
     },
-    methods: {
-        async update() {
-            let points = getExpeditionsNearViewport(window.map);
-            if (this.onlySolo) {
-                points = points.filter(
-                    (f) => f.properties.participantsOrMultiple !== 'Multiple'
-                );
-            }
-            const v = voronoi(featureCollection(points));
-            v.features.forEach((f, i) => {
-                f.properties = points[i].properties;
-            });
-            console.log(v);
-            window.map.U.setData('voronoi', v);
-            window.map.U.setFillColor(
-                'voronoi-fill',
-                await colorFunc({ colorVis: 'participants' })
-            );
-            //
-        },
+  },
+  methods: {
+    async update() {
+      let points = getExpeditionsNearViewport(window.map)
+      if (this.onlySolo) {
+        points = points.filter((f) => f.properties.participantsOrMultiple !== 'Multiple')
+      }
+      const v = voronoi(featureCollection(points))
+      v.features.forEach((f, i) => {
+        f.properties = points[i].properties
+      })
+      console.log(v)
+      window.map.U.setData('voronoi', v)
+      window.map.U.setFillColor('voronoi-fill', await colorFunc({ colorVis: 'participants' }))
+      //
     },
-};
+  },
+}
 </script>
 
 <style scoped></style>

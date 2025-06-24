@@ -108,10 +108,8 @@ export default {
   name: 'Filters',
   data: () => {
     const filters: Filters = {
-      participants: getUrlParam('participants') || '',
       minParticipants: 0,
       maxParticipants: 100,
-      // scaleExpedition: false,
       scaleExpeditionsBy: 'none',
       minYear: 2008,
       maxYear: new Date().getUTCFullYear(),
@@ -130,7 +128,7 @@ export default {
     }
   },
   created() {
-    window.Filters = this
+    window.app.Filters = this
     EventBus.$on('animation-change', (running: boolean) => (this.enabled = !running))
   },
   watch: {

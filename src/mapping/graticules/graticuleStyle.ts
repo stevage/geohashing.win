@@ -4,6 +4,7 @@ import tableauColors from '@/mapping/tableauColors'
 import U from 'map-gl-utils/dist/index.esm.js'
 import type { mapU } from '@/util'
 import type { GraticuleStat } from './graticuleStats'
+import { getExpeditionsByParticipant } from '../mappingParticipants'
 
 /*'match',
     ['to-string', ['feature-state', 'gtg']],
@@ -142,7 +143,7 @@ function graticuleColorByParticipantsFunc(
   return ret
 }
 
-const colorFunc = {
+const colorFunc: Record<string, () => mapboxgl.ExpressionSpecification | string> = {
   uninitiated: () => uninitiatedFillColor,
   none: () => 'transparent',
   expeditions: () => [
@@ -192,9 +193,38 @@ const colorFunc = {
   firstParticipants: () => graticuleColorByParticipantsFunc('firstParticipants'),
   lastParticipants: () => graticuleColorByParticipantsFunc('lastParticipants'),
   mostSuccessfulParticipants: () => graticuleColorByParticipantsFunc('mostSuccessfulParticipants'),
+  selectedParticipants: async () => {
+    const successGraticules = await getGraticulesForSelectedParticipants(true)
+    const failedGraticules = await getGraticulesForSelectedParticipants(false)
+    return [
+      'case',
+      ['in', ['concat', ['get', 'y'], ',', ['get', 'x']], ['literal', successGraticules]],
+      'transparent',
+      ['in', ['concat', ['get', 'y'], ',', ['get', 'x']], ['literal', failedGraticules]],
+      'hsla(0,0%,30%,0.2)',
+
+      'hsla(0,0%,30%,0.4)',
+    ]
+  },
 }
 
-export function updateGraticuleStyle(
+async function getGraticulesForSelectedParticipants(successVal: boolean): Promise<string[]> {
+  const participantsFilter = window.app.Filters.filters.participants
+  if (!participantsFilter) return []
+  const grats: { [graticule: string]: boolean } = {}
+  const expeditionsByParticipant = await getExpeditionsByParticipant()
+  for (const p of participantsFilter.split(',')) {
+    const expeditions = expeditionsByParticipant[p]?.expeditions || []
+    for (const e of expeditions) {
+      if (e.properties.success === successVal && e.properties.graticule) {
+        grats[e.properties.graticule] = true
+      }
+    }
+  }
+  return Object.keys(grats)
+}
+
+export async function updateGraticuleStyle(
   map: mapU,
   options: {
     fillStyle: keyof typeof colorFunc
@@ -203,6 +233,11 @@ export function updateGraticuleStyle(
     infoLabel: string | number
   },
 ) {
+  const participantsFilter = window.app.Filters.filters.participants
+  if (participantsFilter) {
+    options.fillStyle = 'selectedParticipants'
+  }
+
   console.log(options)
   console.log(options.fillStyle)
   map.U.toggle(
@@ -210,13 +245,7 @@ export function updateGraticuleStyle(
     options.showGraticules,
   )
   map.U.toggle('graticules-label', options.showGraticules && options.showGraticuleLabels)
-  // map.U.toggle(
-  //     'graticules-fill',
-  //     options.showGraticules && options.fillStyle !== 'none'
-  // );
-  // console.log('colorFunc', colorFunc);
-  console.log('are we')
-  map.U.setFillColor('graticules-fill', colorFunc[options.fillStyle]())
+  map.U.setFillColor('graticules-fill', await colorFunc[options.fillStyle]())
   map.U.setTextField(
     'graticules-center-label',
     {
