@@ -19,10 +19,13 @@
         .dib participants
       label.mv2.dib
         div.dib Between
-        input.w3.dib.mr1.ml1(type="number" v-model.number="filters.minYear" min="2008" :max="filters.maxYear" :disabled="!enabled")
+        input.w3.dib.mr1.ml1(type="number" v-model.number="filters.minYear" :min="2008" :max="filters.maxYear" :disabled="!enabled")
+        input.w3.dib.mr1.ml1(type="number" v-model.number="filters.minMonth" :min="1" :max="12" :disabled="!enabled" style="width: 3em")
       label.dib
         .dib and
-        input.dib.w3.mr1.ml1(type="number" v-model.number="filters.maxYear" min="2008" max="2030" :disabled="!enabled")
+        input.dib.w3.mr1.ml1(type="number" v-model.number="filters.maxYear" :min="2008" :max="2030" :disabled="!enabled")
+        input.w3.dib.mr1.ml1(type="number" v-model.number="filters.maxMonth" :min="1" :max="12" :disabled="!enabled" style="width: 3em")
+
 
       label.mv2.db
       select(v-model="filters.outcome" :disabled="!enabled")
@@ -116,7 +119,9 @@ export default {
       maxParticipants: 100,
       scaleExpeditionsBy: 'none',
       minYear: 2008,
+      minMonth: 5,
       maxYear: new Date().getUTCFullYear(),
+      maxMonth: 12,
       outcome: 'all',
       dayOfWeek: 'all',
       colorVis: 'year',
@@ -135,7 +140,22 @@ export default {
     window.app.Filters = this
     EventBus.$on('animation-change', (running: boolean) => (this.enabled = !running))
   },
+  computed: {
+    minYear() {
+      return this.filters.minYear
+    },
+    maxYear() {
+      return this.filters.maxYear
+    },
+  },
   watch: {
+    minYear() {
+      this.filters.minMonth = 1
+    },
+    maxYear() {
+      this.filters.maxMonth = 12
+    },
+
     filters: {
       deep: true,
       handler() {

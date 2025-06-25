@@ -19,6 +19,8 @@ export type FiltersOptions = {
   scaleExpeditionsBy: string
   minYear: number
   maxYear: number
+  minMonth: number
+  maxMonth: number
   outcome: string
   dayOfWeek: string
   colorVis: string

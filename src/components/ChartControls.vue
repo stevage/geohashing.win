@@ -8,6 +8,9 @@
     label.db.mt2(v-if="options.showChart")
         | Graph type
         select.ml2(v-model="options.chartId")
+            optgroup(label="Line charts")
+                option(v-for="[chartId, settings] of Object.entries(chartSettings).filter(([id, c]) => c.type === 'line')" :value="chartId")
+                    | {{ settings.name }}
             optgroup(label="Bar charts")
                 option(v-for="[chartId, settings] of Object.entries(chartSettings).filter(([id, c]) => c.type === 'bin')" :value="chartId")
                     | {{ settings.name }}
@@ -25,7 +28,7 @@
             optgroup(label="Other")
                 option(value="countByWeekday") Count by weekday
                 option(value="graticuleByParticipant") Graticule by participant
-    label.db.mt2(v-if="options.showChart && selectedSettings.type === 'bin' && selectedSettings.x.match(/date|dayOf2008/)")
+    label.db.mt2(v-if="options.showChart &&  ['line','bin'].includes(selectedSettings.type) && selectedSettings.x.match(/date|dayOf2008/)")
         | Interval
         select.ml2(v-model="options.interval")
             option(value="day") Day
@@ -63,6 +66,38 @@ const chartSettings = {
     type: 'bin',
     x: 'date',
     fill: 'participantsOrMultiple',
+  },
+  newbieCount: {
+    name: 'Newbies',
+    type: 'bin',
+    x: 'date',
+    fill: true, //'success',
+    filter: (e) => e.experienceMin <= 1, // 0 is when there are "no participants"
+    scheme: 'turbo',
+  },
+  experienceMin: {
+    name: 'Experience min',
+    type: 'bin',
+    x: 'date',
+    fill: 'experienceMin',
+  },
+  experienceMax: {
+    name: 'Experience max',
+    type: 'bin',
+    x: 'date',
+    fill: 'experienceMax',
+  },
+  transport: {
+    name: 'Transport',
+    type: 'bin',
+    x: 'date',
+    fill: 'transportMode',
+  },
+  reportKbBin: {
+    name: 'Report length',
+    type: 'bin',
+    x: 'date',
+    fill: 'reportKb',
   },
   graticule: {
     name: 'Graticule',
@@ -135,13 +170,34 @@ const chartSettings = {
     y: 'graticuleNameShort',
     fill: 'count',
   },
+  medianExperience: {
+    name: 'Median experience',
+    type: 'line',
+    x: 'date',
+    y: 'experienceMin',
+    transform: 'median',
+  },
+  averageParticipantCount: {
+    name: 'Average participant count',
+    type: 'line',
+    x: 'date',
+    y: 'participantsCount',
+    transform: 'mean',
+  },
+  medianParticipantCount: {
+    name: 'Median participant count',
+    type: 'line',
+    x: 'date',
+    y: 'participantsCount',
+    transform: 'median',
+  },
 }
 
 export default {
   name: 'ChartControls',
   data: () => ({
     options: {
-      showChart: false, //!!window.location.host.match(/localhost/),
+      showChart: !!window.location.host.match(/localhost/),
       chartId: 'success',
       interval: 'month',
     },

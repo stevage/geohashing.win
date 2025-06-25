@@ -180,8 +180,9 @@ export async function updateParticipants(map: mapU) {
     }
     map.on('click', clickLabel)
   }
-
-  map.U.setData('participants', featureCollection(participantsFeatures))
+  if (participantsFeatures) {
+    map.U.setData('participants', featureCollection(participantsFeatures))
+  }
 
   const ifHighlighted = (special, non) => {
     if (selectedParticipant) {

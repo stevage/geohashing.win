@@ -609,13 +609,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@observablehq/plot@^0.4.2":
-  version "0.4.3"
-  resolved "https://registry.npmjs.org/@observablehq/plot/-/plot-0.4.3.tgz"
-  integrity sha512-uGR8Jy2sFhWc6vIeSQkW2JuePJXs9b8k1tQdN4RZN9USifATQxjFt5E5f0TIyH4J9ZdyM8/0wHHUQTUPZvT3yA==
+"@observablehq/plot@^0.6.17":
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/@observablehq/plot/-/plot-0.6.17.tgz#9a43f785e89e6d4413701e2b24d2ec8cc2700e02"
+  integrity sha512-/qaXP/7mc4MUS0s4cPPFASDRjtsWp85/TbfsciqDgU1HwYixbSbbytNuInD8AcTYC3xaxACgVX06agdfQy9W+g==
   dependencies:
-    d3 "^7.3.0"
-    isoformat "0.2"
+    d3 "^7.9.0"
+    interval-tree-1d "^1.0.0"
+    isoformat "^0.2.0"
 
 "@pkgr/core@^0.1.0":
   version "0.1.1"
@@ -2741,6 +2742,11 @@ big.js@^5.2.2:
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
+binary-search-bounds@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/binary-search-bounds/-/binary-search-bounds-2.0.5.tgz#125e5bd399882f71e6660d4bf1186384e989fba7"
+  integrity sha512-H0ea4Fd3lS1+sTEB2TgcLoK21lLhwEJzlQv3IN47pJS976Gx4zoWe0ak3q+uYh60ppQxg9F16Ri4tS1sfD4+jA==
+
 birpc@^0.2.19:
   version "0.2.19"
   resolved "https://registry.npmjs.org/birpc/-/birpc-0.2.19.tgz"
@@ -3213,9 +3219,9 @@ d3-zoom@3:
     d3-selection "2 - 3"
     d3-transition "2 - 3"
 
-d3@^7.3.0:
+d3@^7.3.0, d3@^7.9.0:
   version "7.9.0"
-  resolved "https://registry.npmjs.org/d3/-/d3-7.9.0.tgz"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-7.9.0.tgz#579e7acb3d749caf8860bd1741ae8d371070cd5d"
   integrity sha512-e1U46jVP+w7Iut8Jt8ri1YsPOvFpg46k+K8TpCb0P+zjCkjkPnV7WzfDJzMHy1LnA+wj5pLT1wjO901gLXeEhA==
   dependencies:
     d3-array "3"
@@ -3995,6 +4001,13 @@ inherits@2:
   resolved "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz"
   integrity sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==
 
+interval-tree-1d@^1.0.0:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/interval-tree-1d/-/interval-tree-1d-1.0.4.tgz#b44f657de7ddae69ea3f98e0a9ad4bb046b07d11"
+  integrity sha512-wY8QJH+6wNI0uh4pDQzMvl+478Qh7Rl4qLmqiluxALlNvl+I+o5x38Pw3/z7mDPTPS1dQalZJXsmbvxx5gclhQ==
+  dependencies:
+    binary-search-bounds "^2.0.0"
+
 is-arguments@^1.1.1:
   version "1.2.0"
   resolved "https://registry.npmjs.org/is-arguments/-/is-arguments-1.2.0.tgz"
@@ -4112,9 +4125,9 @@ isexe@^3.1.1:
   resolved "https://registry.npmjs.org/isexe/-/isexe-3.1.1.tgz"
   integrity sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==
 
-isoformat@0.2:
+isoformat@^0.2.0:
   version "0.2.1"
-  resolved "https://registry.npmjs.org/isoformat/-/isoformat-0.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/isoformat/-/isoformat-0.2.1.tgz#2526344a4276a101b2881848dc337d1d2ae74494"
   integrity sha512-tFLRAygk9NqrRPhJSnNGh7g7oaVWDwR0wKh/GM2LgmPa50Eg4UfyaCO4I8k6EqJHl1/uh2RAD6g06n5ygEnrjQ==
 
 js-stringify@^1.0.1:

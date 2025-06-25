@@ -19,6 +19,7 @@ import {
 } from './expeditions/expeditionStore'
 
 function updateFilters({ map, filters }: { map: mapU; filters: FiltersOptions }) {
+  console.log('updateFilters', filters)
   const successFilter =
     filters.outcome === 'all' ? true : ['==', ['get', 'success'], filters.outcome === 'success']
   let participantsFilter: Expression | boolean = true
@@ -42,12 +43,16 @@ function updateFilters({ map, filters }: { map: mapU; filters: FiltersOptions })
     participantsFilter,
     ['>=', ['get', 'participantsCount'], filters.minParticipants],
     ['<=', ['get', 'participantsCount'], filters.maxParticipants],
-    ['>=', ['get', 'year'], filters.minYear],
-    ['<=', ['get', 'year'], filters.maxYear],
+    // ['>=', ['get', 'year'], filters.minYear],
+    // ['<=', ['get', 'year'], filters.maxYear],
+    ['>=', ['get', 'id'], `${filters.minYear}-${filters.minMonth.toString().padStart(2, '0')}`],
+    ['<=', ['get', 'id'], `${filters.maxYear}-${filters.maxMonth.toString().padStart(2, '0')}`],
+
     dayOfWeekFilter,
     successFilter,
   ])
   map.U.setCircleRadius('expeditions-circles', circleRadiusFunc({ filters }))
+  console.log('updateFilters done')
 }
 
 const updateFiltersDebounced = debounce(updateFilters, 1500)
