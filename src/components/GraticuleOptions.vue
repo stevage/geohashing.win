@@ -9,7 +9,7 @@
         option(value="expeditions") Expedition count
         option(value="daysSinceExpedition") Recently active
         option(value="totalParticipants") Total participants
-        option(value="firstParticipants") First participant
+        option(value="firstParticipants") First successful participant
         option(value="lastParticipants") Recent participant
         option(value="mostSuccessfulParticipants") Most successful participant
   .db.mv3
